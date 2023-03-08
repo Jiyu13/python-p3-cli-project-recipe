@@ -20,7 +20,7 @@ if __name__ == '__main__':
     author = None
     while not author:
         author_id = input('Please enter the ID of the author: ')
-        author = session.query(author).filter(author.id == author_id).one_or_none()
+        author = session.query(Author).filter(Author.id == author_id).one_or_none()
 
     # Display list of cookbooks written by the author
     print('Here is a list of cookbooks:')
