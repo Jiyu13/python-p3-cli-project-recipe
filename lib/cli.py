@@ -3,9 +3,8 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from db.models import Author
-from helpers import (create_author_table, create_cook_book_table,
-                     fill_cart, show_cart, remove_from_cart, collect_payment)
+from db.models import Author, CookBook
+from helpers import (create_author_table, create_cook_book_table, create_receipe_table)
 
 engine = create_engine('sqlite:///db/recipes.db')
 session = sessionmaker(bind=engine)()
@@ -23,5 +22,14 @@ if __name__ == '__main__':
         author = session.query(Author).filter(Author.id == author_id).one_or_none()
 
     # Display list of cookbooks written by the author
-    print('Here is a list of cookbooks:')
+    print('Here is a list of cookbooks: ')
     create_cook_book_table(author)
+
+    cook_book = None
+    while not cook_book:
+        cook_book_id = input('Please enter the ID of the cookbook: ')
+        cook_book = session.query(CookBook).filter(CookBook.id == cook_book_id).one_or_none()
+
+    # Display the receipes inside the cookbook
+    print('Here are the receipies in this cookbook: ')
+    create_receipe_table(cook_book)
