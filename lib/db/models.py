@@ -12,7 +12,8 @@ class Author(Base):
     id = Column(Integer(), primary_key=True)
     first_name = Column(String())
     last_name = Column(String())
-    # books = relationship("CookBook", backref=backref("author"))
+
+    books = relationship("CookBook", backref=backref("author"))
 
     def __repr__(self):
         return f'Author(id={self.id}, ' + \
@@ -23,8 +24,9 @@ class CookBook(Base):
     __tablename__ = "cookbooks"
     id = Column(Integer(), primary_key=True)
     name = Column(String())
-    # author_id = Column(Integer(), ForeignKey("authors.id"))
-    # recipes = relationship("Recipe", backref=backref("cookbook"))
+
+    author_id = Column(Integer(), ForeignKey("authors.id"))
+    recipes = relationship("Recipe", backref=backref("cookbook"))
 
     def __repr__(self):
         return f'CookBook(id={self.id}, ' + \
@@ -37,7 +39,8 @@ class Recipe(Base):
     id = Column(Integer(), primary_key=True)
     category = Column(String())
     link = Column(String())
-    # book_id = Column(Integer(), ForeignKey="cookbooks.id")
+
+    book_id = Column(Integer(), ForeignKey("cookbooks.id"))
 
 
     def __repr__(self):
