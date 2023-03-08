@@ -4,30 +4,50 @@ YES = ['y', 'ye', 'yes']
 NO = ['n', 'no']
 
 def create_author_table(authors):
-    print('-' * 50)
-    print(f'|ID  |NAME{" " * 39}|')
-    print('-' * 50)
+    print('-' * 37)
+    print(f'|ID  |FIRST-NAME{" " * 5}|LAST-NAME{" " * 5}|')
+    print('-' * 37)
     for author in authors:
         id_spaces = 4 - len(str(author.id))
-        name_spaces = 43 - len(author.name)
-        print(f'|{author.id}{" " * id_spaces}|{author.name}{" " * name_spaces}|')
-    print('-' * 50)
+        first_name_spaces = 15 - len(author.first_name) 
+        last_name_spaces = 14 - len(author.last_name)
+        print(f'|{author.id}{" " * id_spaces}|{author.first_name}{" " * first_name_spaces}|{author.last_name}{" " * last_name_spaces}|')
+    print('-' * 37)
 
-def create_cook_book_table(cook_book):
-    print('-' * 50)
-    print(f'|ID  |Receipe NAME{" " * 24}|LINK{" " * 4}|CATEGORY{" " * 4}')
-    print('-' * 50)
-    for cook_book in sorted(cook_book.cook_books, key=lambda g: g.id):
+
+def create_cook_book_table(author):
+    print('-' * 85)
+    print(f'|ID  |BOOK NAME{" " * 41}|AUTHOR{" " * 21}|')
+    print('-' * 85)
+    for cook_book in sorted(author.books, key=lambda b: b.id):
         id_spaces = 4 - len(str(cook_book.id))
-        name_spaces = 33 - len(cook_book.name)
-        link_spaces = 33 - len(cook_book.link)
-        category_spaces = 33 - len(cook_book.category)
+        name_spaces = 50 - len(cook_book.name)
+        author_spaces = 26 - len(author.first_name + author.last_name)
         output_string = f'|{cook_book.id}{" " * id_spaces}|' + \
             f'{cook_book.name}{" " * name_spaces}|' + \
-            f'{cook_book.link}{" " * link_spaces}|' + \
-            f'{cook_book.category}{" " * category_spaces}|' 
+            f'{author.first_name} {author.last_name}{" " * author_spaces}|'
+
         print(output_string)
-    print('-' * 50)
+    print('-' * 85)
+
+# def create_cook_book_table(author):
+#     print('-' * 50)
+#     print(f'|ID  |BOOK NAME{" " * 20}|LINK{" " * 4}|CATEGORY{" " * 4}')
+#     print('-' * 50)
+#     for cook_book in sorted(author.books, key=lambda b: b.id):
+#         id_spaces = 4 - len(str(cook_book.id))
+#         name_spaces = 33 - len(cook_book.name)
+#         output_string = f'|{cook_book.id}{" " * id_spaces}|' + \
+#             f'{cook_book.name}{" " * name_spaces}|'
+
+#         print(output_string)
+#     print('-' * 50)
+
+# link_spaces = 33 - len(cook_book.link)
+# category_spaces = 33 - len(cook_book.category)
+            #  + \
+    # f'{cook_book.link}{" " * link_spaces}|' + \
+    # f'{cook_book.category}{" " * category_spaces}|' 
 
 def fill_cart(session, author):
     shopping_cart = ShoppingCart(author=author)
