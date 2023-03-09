@@ -47,7 +47,7 @@ while is_game_on:
             cook_book = session.query(CookBook).filter(CookBook.id == cook_book_id).one_or_none()
 
         # Display the receipes inside the cookbook
-        print('Here are the receipies in this cookbook: ')
+        print('Here are the recipes in this cookbook: ')
         create_receipe_table(cook_book.recipes)
 
 
@@ -65,9 +65,17 @@ while is_game_on:
 
     elif choice == "3":
         all_cookbooks = None
-        cookbooks = session.query(CookBook).all()
-        show_all_cookbooks(session, cookbooks)
+        is_check_recipe = True
+        while is_check_recipe:
+            cookbooks = session.query(CookBook).all()
+            is_check_recipe = show_all_cookbooks(session, cookbooks)
+            if is_check_recipe == "#":
+                is_check_recipe = False
+            else:
+                cookbook = session.query(CookBook).filter(CookBook.id==is_check_recipe).one_or_none()
+                create_receipe_table(cookbook.recipes)
 
+        
     elif choice == "1":
         in_category = True
         while in_category:

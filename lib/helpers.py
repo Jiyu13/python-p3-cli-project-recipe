@@ -70,6 +70,9 @@ def show_all_cookbooks(session, books):
 
         print(output_string)
     print('-' * 80)
+    is_check_recipe = input("Enter the ID of the cookbook to continue checking the recipes, or # to go back to the main menu: ")
+    return is_check_recipe
+        
 
 
 def main_menu():
