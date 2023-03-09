@@ -1,8 +1,8 @@
-"""added Author, CookBook, Recipe models
+"""added author, cookbook, recipe models
 
-Revision ID: db3294709296
-Revises: 
-Create Date: 2023-03-07 14:52:02.304300
+Revision ID: f2ce8e545e57
+Revises: 2823ca446974
+Create Date: 2023-03-09 12:04:11.248249
 
 """
 from alembic import op
@@ -10,8 +10,8 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'db3294709296'
-down_revision = None
+revision = 'f2ce8e545e57'
+down_revision = '2823ca446974'
 branch_labels = None
 depends_on = None
 
@@ -27,12 +27,16 @@ def upgrade() -> None:
     op.create_table('cookbooks',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(), nullable=True),
+    sa.Column('author_id', sa.Integer(), nullable=True),
+    sa.ForeignKeyConstraint(['author_id'], ['authors.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('recipes',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('category', sa.String(), nullable=True),
     sa.Column('link', sa.String(), nullable=True),
+    sa.Column('book_id', sa.Integer(), nullable=True),
+    sa.ForeignKeyConstraint(['book_id'], ['cookbooks.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     # ### end Alembic commands ###
