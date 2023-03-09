@@ -9,7 +9,7 @@ from helpers import (create_author_table, create_cook_book_table,
                      show_category, main_menu,
                      check_category)
 
-engine = create_engine('sqlite:///db/recipes.db')
+engine = create_engine('sqlite:///recipes.db')
 session = sessionmaker(bind=engine)()
 
 if __name__ == '__main__':
