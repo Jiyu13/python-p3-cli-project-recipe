@@ -67,4 +67,4 @@ class User(Base):
 
     def __repr__(self):
         return f'User(id={self.id}, ' + \
-            f'username={self.name}' 
+            f'username={self.username}' 
