@@ -4,7 +4,7 @@ from faker import Faker
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from models import Author, CookBook, Recipe
+from models import Author, CookBook, Recipe, User
 
 CATEGORIES = ["breakfast", 
                 "desserts", 
@@ -21,6 +21,18 @@ session = Session()
 
 fake = Faker()
 
+def make_users():
+    print("Deleting existing authors...")
+    session.query(User).delete()
+    session.commit()
+
+    users = [User(
+        username=fake.simple_profile()["username"]
+    ) for i in range(30)]
+
+    session.add_all(users)
+    session.commit()
+    return users
 
 def make_authors():
     print("Deleting existing authors...")
@@ -81,6 +93,7 @@ if __name__ == '__main__':
     authors = make_authors()
     books = make_cook_books(authors)
     make_recipes = make_recipes(books)
+    users = make_users()
     
     # engine = create_engine('sqlite:///recipes.db')
     # Session = sessionmaker(bind=engine)
