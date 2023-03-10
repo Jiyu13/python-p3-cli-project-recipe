@@ -58,7 +58,7 @@ def make_cook_books(authors):
     for author in authors:
         for i in range(random.randint(1, 3)):
             book = CookBook(
-                name=fake.unique.text().split(".")[0],
+                name=fake.unique.text().split(".")[0][0:15],
                 author_id=author.id
             )
             cook_books.append(book)

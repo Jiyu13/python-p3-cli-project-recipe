@@ -57,9 +57,7 @@ while is_game_on:
 
             cook_book_id = input('Please enter the ID of the cookbook to check recipes: ')
             cookbooks = session.query(CookBook).filter(CookBook.author_id==cook_book_id)
-            print("line 60: ", cookbooks.count())
             
-            # if 1<= int(cook_book_id) <= cookbooks.count():2
             cook_book = session.query(CookBook).filter(CookBook.id == cook_book_id).one_or_none()
 
         # Display the receipes inside the cookbook
@@ -71,7 +69,6 @@ while is_game_on:
         is_check_recipe = True
         while is_check_recipe:
             cookbooks = session.query(CookBook)
-            # print(cookbooks.count())
             book_id = show_all_cookbooks(session, cookbooks)
             if book_id == "#":
                 is_check_recipe = False
