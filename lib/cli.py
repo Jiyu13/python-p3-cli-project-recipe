@@ -35,11 +35,17 @@ while is_game_on:
         author = None
         print("\n")
         while not author:
-            author_id = input('Please enter the ID of the author to check his/her cookbooks: ')
-            if 1<= int(author_id) <= authors.count():
-                author = session.query(Author).filter(Author.id == author_id).one_or_none()
-            else:
+            try:
+                author_id = int(input('Please enter the ID of the author to check his/her cookbooks: '))
+            except:
                 print("!!!!!please enter a valid ID!!!!!")
+            
+            else: 
+                if 1<= int(author_id) <= authors.count():
+                    author = session.query(Author).filter(Author.id == author_id).one_or_none()
+                    
+                else:
+                    print("!!!!!please enter a correct ID!!!!!")
 
         # Display list of cookbooks written by the author
         print('Here is a list of cookbooks: ')
@@ -51,9 +57,10 @@ while is_game_on:
 
             cook_book_id = input('Please enter the ID of the cookbook to check recipes: ')
             cookbooks = session.query(CookBook).filter(CookBook.author_id==cook_book_id)
+            print("line 60: ", cookbooks.count())
             
-            if 1<= int(cook_book_id) <= cookbooks.count():
-                cook_book = session.query(CookBook).filter(CookBook.id == cook_book_id).one_or_none()
+            # if 1<= int(cook_book_id) <= cookbooks.count():2
+            cook_book = session.query(CookBook).filter(CookBook.id == cook_book_id).one_or_none()
 
         # Display the receipes inside the cookbook
         print('Here are the recipes in this cookbook: ')
