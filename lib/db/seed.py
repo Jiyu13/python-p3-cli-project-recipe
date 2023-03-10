@@ -4,7 +4,7 @@ from faker import Faker
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from models import Author, CookBook, Recipe
+from models import Author, CookBook, Recipe, User, cookbook_user
 
 CATEGORIES = ["breakfast", 
                 "desserts", 
@@ -21,6 +21,18 @@ session = Session()
 
 fake = Faker()
 
+def make_users():
+    print("Deleting existing authors...")
+    session.query(User).delete()
+    session.commit()
+
+    users = [User(
+        username=fake.simple_profile()["username"]
+    ) for i in range(30)]
+
+    session.add_all(users)
+    session.commit()
+    return users
 
 def make_authors():
     print("Deleting existing authors...")
@@ -76,49 +88,38 @@ def make_recipes(cook_books):
     return recipes
 
 
+def join_table(users, books):
+    print("Deleting existing join-table...")
+    session.query(cookbook_user).delete()
+    session.commit()
+    for book in books:
+        for i in range(random.randint(1, 5)):
+            user = random.choice(users)
+            if book not in user.cookbooks:
+                user.cookbooks.append(book)
+                session.add(user)
+                session.commit()
+
+
 if __name__ == '__main__':
 
     authors = make_authors()
     books = make_cook_books(authors)
     make_recipes = make_recipes(books)
+    users = make_users()
+    join_table(users, books)
+
+    # for user in users:
+    #     for i in range(random.randint(1,3)):
+    #         book = random.choice(books)
+    #         if user not in book.users:
+    #             book.users.append(user)
+    #             session.add(book)
+    #             session.commit()
+        # # user.cookbooks[:] = []
+        #     if user not in user.cookbooks:
+            # user.cookbooks.append(random.choice(books))
+
+    # session.bulk_save_objects(users)    
+    # session.commit()
     
-    # engine = create_engine('sqlite:///recipes.db')
-    # Session = sessionmaker(bind=engine)
-    # session = Session()
-
-    # fake = Faker()
-
-    # session.query(Author).delete()
-    # session.query(CookBook).delete()
-    # session.query(Recipe).delete()
-
-
-    # CATEGORIES = ["breakfast", 
-    #             "desserts", 
-    #             "soups and stews"
-    #             "sides dishes", 
-    #             "salads and dressings", 
-    #             "sauces and dips"
-    #             "main dishes"
-    # ]
-
-    # authors = []
-    # for i in range(5):
-    #     author = Author(
-    #         first_name=fake.unique.firstName(),
-    #         last_name=fake.unique.lastName()
-    #     )
-
-    #     session.add(author)
-    #     session.commit()
-    #     authors.append(author)
-
-    
-    # cook_books = []
-    # for author in authors:
-    #     for i in range(rc(1, 3))
-    #         book = CookBook(
-    #             name=fake.unique.text().split(".")[0]
-    #             author_id=author.id
-    #         )
-    #         cook_books.append(book)

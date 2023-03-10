@@ -24,19 +24,19 @@ def create_author_table(authors):
 
 
 def create_cook_book_table(author):
-    print('-' * 85)
-    print(f'|ID  |BOOK NAME{" " * 41}|AUTHOR{" " * 21}|')
-    print('-' * 85)
+    print('-' * 80)
+    print(f'|ID  |BOOK NAME{" " * 41}|AUTHOR{" " * 16}|')
+    print('-' * 80)
     for cook_book in sorted(author.books, key=lambda b: b.id):
         id_spaces = 4 - len(str(cook_book.id))
         name_spaces = 50 - len(cook_book.name)
-        author_spaces = 26 - len(author.first_name + author.last_name)
+        author_spaces = 21 - len(author.first_name + author.last_name)
         output_string = f'|{cook_book.id}{" " * id_spaces}|' + \
             f'{cook_book.name}{" " * name_spaces}|' + \
             f'{author.first_name} {author.last_name}{" " * author_spaces}|'
 
         print(output_string)
-    print('-' * 85)
+    print('-' * 80)
 
 def create_receipe_table(recipes):
     print('-' * 80)
@@ -71,6 +71,7 @@ def show_all_cookbooks(session, books):
         print(output_string)
     print('-' * 80)
     is_check_recipe = input("Enter the ID of the cookbook to continue checking the recipes, or # to go back to the main menu: ")
+    print("\n")
     return is_check_recipe
         
 
