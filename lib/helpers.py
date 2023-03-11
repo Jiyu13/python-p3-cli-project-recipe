@@ -1,4 +1,5 @@
 from db.models import Author, CookBook, Recipe
+import os
 
 YES = ['y', 'ye', 'yes']
 NO = ['n', 'no']
@@ -10,6 +11,18 @@ CATEGORIES = ["breakfast",
                 "sauces and dips",
                 "main dishes"
 ]
+
+
+def clear_screen():
+    os.system('cls' if os.name == 'nt' else 'clear')
+    
+    # # posix is os name for Linux or mac
+    # if(os.name == 'posix'):
+    #     os.system('clear')
+    # # else screen will be cleared for windows
+    # else:
+    #     os.system('cls')
+
 
 def create_author_table(authors):
     print('-' * 80)
@@ -77,7 +90,7 @@ def show_all_cookbooks(session, books):
 
 
 def main_menu():
-    print("Here is the menu:")
+    print("\U0001F449 " + "Here is the menu:")
     print("Enter 1 to check recipe types.")
     print("Enter 2 to check all authors.")
     print("Enter 3 to check all cookbooks.")
@@ -110,5 +123,5 @@ def check_category(session, chosen_category):
     for recipe in recipes:
         if recipe.category == chosen_category:
             chosen_recipes.append(recipe)
-    
+
     create_receipe_table(chosen_recipes)
