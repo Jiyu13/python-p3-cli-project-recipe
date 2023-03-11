@@ -7,12 +7,15 @@ from db.models import Author, CookBook
 from helpers import (create_author_table, create_cook_book_table, 
                      create_receipe_table, show_all_cookbooks, 
                      show_category, main_menu,
-                     check_category)
+                     check_category, clear_screen,
+                     CATEGORIES)
 
 engine = create_engine('sqlite:///db/recipes.db')
 session = sessionmaker(bind=engine)()
 
 if __name__ == '__main__':
+    # print("\U0001F449")
+
     print('''
  ____  ____   ___  ____  ____  ____     ___  __    ____ 
 (  _ \( ___) / __)(_  _)(  _ \( ___)   / __)(  )  (_  _)
@@ -26,8 +29,9 @@ is_game_on = True
 while is_game_on:
     choice = main_menu()
     print("\n")
+    clear_screen()
     if choice == "2":
-        print('Here is a list of available authors:')
+        print("\U0001F449 " + 'Here is a list of available authors:')
         authors = session.query(Author)
         create_author_table(authors)
 
@@ -46,10 +50,12 @@ while is_game_on:
                     
                 else:
                     print("!!!!!please enter a correct ID!!!!!")
-
+        clear_screen()
+        
         # Display list of cookbooks written by the author
-        print('Here is a list of cookbooks: ')
+        print("\U0001F449 " + 'Here is a list of cookbooks of the author you picked: ')
         create_cook_book_table(author)
+        
 
         cook_book = None
         while not cook_book:
@@ -59,9 +65,10 @@ while is_game_on:
             cookbooks = session.query(CookBook).filter(CookBook.author_id==cook_book_id)
             
             cook_book = session.query(CookBook).filter(CookBook.id == cook_book_id).one_or_none()
-
+            clear_screen()
+        
         # Display the receipes inside the cookbook
-        print('Here are the recipes in this cookbook: ')
+        print("\U0001F449 " + 'Here are the recipes in this cookbook: ')
         create_receipe_table(cook_book.recipes)
 
     elif choice == "3":
@@ -69,23 +76,36 @@ while is_game_on:
         is_check_recipe = True
         while is_check_recipe:
             cookbooks = session.query(CookBook)
+            print("\U0001F449 " + "Here is the list of avaliable cookbooks:")
             book_id = show_all_cookbooks(session, cookbooks)
+            clear_screen()
+            
             if book_id == "#":
                 is_check_recipe = False
-            elif 1 <= int(book_id) <= cookbooks.count():
-                cookbook = session.query(CookBook).filter(CookBook.id==is_check_recipe).one_or_none()
-                create_receipe_table(cookbook.recipes)
             else:
-                print("!!!!!please enter a valid ID!!!!!")
+                if 1 <= int(book_id) <= cookbooks.count():
+                    cookbook = session.query(CookBook).filter(CookBook.id==is_check_recipe).one_or_none()
+                    print("\U0001F449 " + f"Here is the list of recipes from the cookbook (ID: {book_id}):")
+                    create_receipe_table(cookbook.recipes)
+                else:
+                    print("!!!!!please enter a valid ID!!!!!")
 
+
+        clear_screen()
         
     elif choice == "1":
         in_category = True
         while in_category:
+            print("\U0001F449 " + "Here is the list of recipe categories:")
             yes_no = show_category()
+            clear_screen()
 
             if yes_no != "no":
-                check_category(session, yes_no)
+                if yes_no in CATEGORIES:
+                    print("\U0001F449 " + f"Here is the list of recipes for {yes_no.upper()}:")
+                    check_category(session, yes_no)
+                else:
+                    print("!!!!!please enter a valid category name!!!!!")
             else:
                 in_category = False
 
